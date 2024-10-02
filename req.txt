@@ -1,0 +1,4 @@
+Flask
+sqlite
+flask-sqlalchemy
+Werkzeug
