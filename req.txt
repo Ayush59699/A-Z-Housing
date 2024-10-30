@@ -1,4 +1,8 @@
-Flask
-sqlite
+flask
+sqlalchemy
 flask-sqlalchemy
+Flask-RESTful
+flask-login
+flask_wtf
 Werkzeug
+email_validator
