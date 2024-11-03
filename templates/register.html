@@ -1,24 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-</head>
-<body>
-    <h1>Register</h1>
-    <form method="POST" action="{{ url_for('register') }}">
-        <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name" required><br><br>
+{% extends "base.html" %}
 
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" required><br><br>
+{% block title %} Register {% endblock %}
 
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password" required><br><br>
 
-        <button type="submit">Register</button>
+{% block content %}
+
+<h2>Register</h2>
+    <form method="POST" action="/register">
+        {{ form.hidden_tag() }}
+        <div>
+            <label for="fullname">Fullname</label>
+            {{ form.fullname(size=32) }}
+        </div>
+        <div>
+            <label for="email">Email</label>
+            {{ form.email(size=32) }}
+        </div>
+        <div>
+            <label for="password">Password</label>
+            {{ form.password(size=32) }}
+        </div>
+        <div>
+            <label for="address">Address</label>
+            {{ form.address(size=32) }}
+        </div>
+        <div>
+            <label for="pincode">Pincode</label>
+            {{ form.pincode(size=32) }}
+        </div>
+        <div>
+            {{ form.submit() }}
+        </div>
     </form>
-    <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a>.</p>
-</body>
-</html>
+    
+
+
+
+
+
+{% endblock %}

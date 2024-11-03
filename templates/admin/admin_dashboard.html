@@ -1,0 +1,34 @@
+{% extends "admin/base_admin_dash.html"%}
+
+
+{% block title%}Admin Dash {% endblock %}
+
+{% block greet%} {{admin.name}} {% endblock %}
+
+
+{% block content%}
+
+<div class="container">
+    <h1>Admin Dashboard</h1>
+    <h2>Hello, {{admin.name}}</h2>
+    <h3>Email: {{ admin.email }}</h3>
+
+    <a href="{{url_for('logout')}}" class="btn btn-primary">Logout</a>
+ 
+
+    <h3>Customers</h3>
+    <ul>
+        {% for customer in customers %}
+            <li>{{ customer.name }} - {{ customer.email }}</li>
+        {% endfor %}
+    </ul>
+ 
+    <h3>Service Professionals</h3>
+    <ul>
+        {% for professional in professionals %}
+            <li>{{ professional.name }} - {{ professional.email }} - {{ professional.service_name }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('add_service') }}" class="btn btn-primary">Add Service</a>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "professional/base_professional_dash.html"%}
+
+
+{% block title%}Professionals Dash {% endblock %}
+
+{% block greet%} {{professional.name}} {% endblock %}
+
+{% block content%}
+
+<div class="container">
+    <h1>Professional Dashboard</h1>
+    <h2>Hello, {{professional.name}}</h2>
+    <p>Email: {{professional.email}}</p>
+
+    <a href="{{url_for('logout')}}" class="btn btn-primary">Logout</a>
+    
+ </div>   
+    
+{% endblock %}
+ 
