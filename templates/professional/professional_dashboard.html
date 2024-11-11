@@ -1,6 +1,5 @@
 {% extends "professional/base_professional_dash.html"%}
 
-
 {% block title%}Professionals Dash {% endblock %}
 
 {% block greet%} {{professional.name}} {% endblock %}
@@ -8,13 +7,174 @@
 {% block content%}
 
 <div class="container">
-    <h1>Professional Dashboard</h1>
     <h2>Hello, {{professional.name}}</h2>
-    <p>Email: {{professional.email}}</p>
+    <p>Your Expertise Service: {{ current_user.service_name}}</p>
 
+    <h3>Available Service Requests</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Customer Name</th>
+                <th>Service</th>
+                <th>Description</th>
+                <th>Date Requested</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in service_requests %}
+            <tr>
+                <td>{{ request.customer.name }}</td>
+                <td>{{ request.service.name }}</td>
+                <td>{{ request.service.description }}</td>
+                <td>{{ request.date_of_request }}</td>
+                <td>
+                    <!-- Accept Button with Confirmation -->
+                    <form action="{{ url_for('accept_request', request_id=request.id) }}" method="post" class="action-form">
+                        <button type="submit" class="btn btn-success accept-btn">Accept</button>
+                    </form>
+
+                    <!-- Decline Button with Confirmation -->
+                    <form action="{{ url_for('decline_request', request_id=request.id) }}" method="post" class="action-form">
+                        <button type="submit" class="btn btn-danger reject-btn">Decline</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="5">No matching requests available.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Accepted Requests</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Customer Name</th>
+                <th>Service</th>
+                <th>Description</th>
+                <th>Date Requested</th>
+                <th> Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in accepted_requests %}
+            <tr>
+                <td>{{ request.customer.name }}</td>
+                <td>{{ request.service.name }}</td>
+                <td>{{ request.service.description }}</td>
+                <td>{{ request.date_of_request }}</td>
+                <td>{{request.status}}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4">No accepted requests.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+<!--
+        <h3>Rejected Requests</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Customer Name</th>
+                <th>Service</th>
+                <th>Description</th>
+                <th>Date Requested</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in rejected_requests %}
+            <tr>
+                <td>{{ request.customer.name }}</td>
+                <td>{{ request.service.name }}</td>
+                <td>{{ request.service.description }}</td>
+                <td>{{ request.date_of_request }}</td>
+                <td>{{request.status}}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4">No rejected requests.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <hr>
     <a href="{{url_for('logout')}}" class="btn btn-primary">Logout</a>
-    
- </div>   
-    
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get all accept buttons
+        const acceptButtons = document.querySelectorAll('.accept-btn');
+        const rejectButtons = document.querySelectorAll('.reject-btn');
+
+        // Attach confirmation to Accept buttons
+        acceptButtons.forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent default form submission
+                const confirmed = confirm("Are you sure you want to accept this request?");
+                if (confirmed) {
+                    // Submit the form if the user confirms
+                    button.closest('form').submit();
+                }
+            });
+        });
+
+        // Attach confirmation to Reject buttons
+        rejectButtons.forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent default form submission
+                const confirmed = confirm("Are you sure you want to reject this request?");
+                if (confirmed) {
+                    // Submit the form if the user confirms
+                    button.closest('form').submit();
+                }
+            });
+        });
+    });
+</script>
+
 {% endblock %}
- 
