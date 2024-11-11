@@ -1,7 +1,67 @@
 {% extends "professional/base_professional_dash.html" %}
 
+{% block title%}Professional Dash Search {% endblock %}
+
+{% block greet%} {{professional.name}} {% endblock %}
+
 
 {% block content %}
 
-<h3>Hello from PRO Dash Search</h3>
-{% endblock %}
+
+
+<form method="POST" action="{{ url_for('professional_search') }}">
+    <div>
+        <label for="search_field">Search by:</label>
+        <select name="search_field" id="search_field" >
+            <option value="date_of_request">Date</option>
+            <option value="address">Address</option>
+            <option value="pincode">Pincode</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="search_text">Search Text:</label>
+        <input type="text" name="search_text" id="search_text" placeholder="Enter your search criteria" />
+    </div>
+    
+    <button type="submit">Search</button>
+</form>
+
+
+
+
+
+
+{% if results %}
+    <h3>Search Results:</h3>
+    <table border="1" cellpadding="10">
+        <thead>
+            <tr>
+                <th>Customer</th>
+                <th>Service</th>
+                <th>Date of Request</th>
+                <th>Address</th>
+                <th>Pincode</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in results %}
+                <tr>
+                    <td>{{ result.customer.name }}</td>
+                    <td>{{ result.service.name }}</td>
+                    <td>{{ result.date_of_request }}</td>
+                    <td>{{ result.customer.address }}</td>
+                    <td>{{ result.customer.pincode }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No service requests match the search criteria.</p>
+{% endif %}
+
+
+
+
+
+{% endblock %} 
