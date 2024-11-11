@@ -1,9 +1,54 @@
 {% extends "customer/base_customer_dash.html"%}
 
-
-
 {% block content%}
-<h3>Hello from Customer  Dashboard Search </h3>
 
+
+<div class="container">
+  <h2>Search Services</h2>
+
+  <form
+    action="{{ url_for('customer_search') }}"
+    method="get"
+    class="form-inline my-4">
+
+    <input
+      type="text"
+      name="q"
+      class="form-control mr-2"
+      placeholder="Search for services..."
+      value="{{ search_query }}"
+      required/>
+
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form> 
+
+  {% if sq %}
+  <h3>Best {{ sq.capitalize() }} Packages</h3>
+  {% endif %} {% if results %}
+  <div class="row mt-4">
+    {% for service in results %}
+    <div class="col-md-4 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{ service.name }}</h5>
+          <p class="card-text">{{ service.description }}</p>
+          <p class="card-text">Price: ${{ service.price }}</p>
+          <a
+            href="{{ url_for('book_service', service_id=service.id) }}"
+            class="btn btn-success"
+          >
+            BOOK
+          </a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %} {% if sq %}
+  <p>No services found for "{{ sq }}".</p>
+  {% else %}
+  <p>Enter a search term to find services.</p>
+  {% endif %} {% endif %}
+</div>
 
 {% endblock %}
