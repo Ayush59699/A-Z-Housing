@@ -1,0 +1,32 @@
+{% extends "customer/base_customer_dash.html" %}
+
+{% block title %}Gardening Services{% endblock %}
+{% block greet%} {{customer.name}} {% endblock %}
+
+{% block content %}
+<div class="container">
+    <h3>Available Gardening Services</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Service Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for service in services %}
+            <tr>
+                <td>{{ service.name }}</td>
+                <td>{{ service.description }}</td>
+                <td>${{ service.price }}</td>
+                <td>
+                    <a href="{{ url_for('book_service', service_id=service.id) }}" class="btn btn-primary">Book</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

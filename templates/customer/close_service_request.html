@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Close Service Request</h2>
+
+<hr>
+
+<div class="container">
+    <h4>Service Request Details</h4>
+    <table class="table table-bordered">
+        <tr>
+            <th>Service Name</th>
+            <td>{{ service_request.service.name }}</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>{{ service_request.service.description }}</td>
+        </tr>
+        <tr>
+            <th>Request ID</th>
+            <td>{{ service_request.id }}</td>
+        </tr>
+        <tr>
+            <th>Professional ID</th>
+            <td>{{ service_request.professional_id }}</td>
+        </tr>
+        <tr>
+            <th>Professional Name</th>
+            <td>{{ professional.name if professional else 'Not Assigned' }}</td>
+        </tr>
+        <!--
+        <tr>
+            <th>Contact Number</th>
+            <td>{{ professional.contact_number if professional else 'N/A' }}</td>
+        </tr>
+        -->
+        <tr>
+            <th>Date of Completion</th>
+            <td>{{ service_request.date_of_completion if service_request.date_of_completion else 'Not Completed' }}</td>
+        </tr>
+    </table>
+
+    <h4>Provide Your Feedback</h4>
+    <form method="POST">
+        <div class="form-group">
+            <label for="rating">Rating (1-5):</label>
+            <input type="number" id="rating" name="rating" min="1" max="5" required class="form-control">
+        </div><br>
+        
+        <div class="form-group">
+            <label for="remarks">Remarks:</label>
+            <textarea id="remarks" name="remarks" class="form-control" required></textarea>
+        </div><br>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+
+<br>
+<button class="btn btn-primary">
+    <a href="{{ url_for('customer_dashboard') }}" >Cancel</a>
+
+</button>
+    {% endblock %}
+
+
+<!--
+<form method="POST">
+    <div class="form-group">
+        <label for="rating">Rating (1-5):</label>
+        <input type="number" id="rating" name="rating" min="1" max="5" required class="form-control">
+    </div>
+    
+    <div class="form-group">
+        <label for="remarks">Remarks:</label>
+        <textarea id="remarks" name="remarks" class="form-control" required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+-->

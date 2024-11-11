@@ -1,0 +1,21 @@
+{% extends "customer/base_customer_dash.html" %}
+
+{% block title %}Book Service{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h3>Book {{ service.name }}</h3>
+    <form method="POST">
+        <div class="form-group">
+            <label for="date_of_request">Date of Request:</label>
+            <input type="date" class="form-control" id="date_of_request" name="date_of_request" required>
+        </div>
+        <button type="submit" onclick="showAlert()" class="btn btn-primary">Confirm Booking</button>
+    </form>
+</div>
+<script>
+    function showAlert() {
+    alert("Service Booked Successfully!");
+    }
+    </script>
+{% endblock %}
