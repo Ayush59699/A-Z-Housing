@@ -1,22 +1,74 @@
-{% extends "customer/base_customer_dash.html"%}
-
-
-{% block title%}Customer Dash {% endblock %}
-
-{% block greet%} {{customer.name}} {% endblock %}
-
-{% block content%}
+{% extends "customer/base_customer_dash.html"%} {% block title%}Customer Dash {%
+endblock %} {% block greet%} {{customer.name}} {% endblock %} {% block content%}
 
 <div class="container">
-    <h1>Customer Dashboard</h1>
-    <h2>Hello, {{customer.name}}</h2>
-    <p>Email: {{customer.email}}</p>
-    <p>Address: {{customer.address}}</p>
-    <p>Pincode: {{customer.pincode}}</p>
- 
-    <a href="{{url_for('logout')}}">Logout</a>
-    
+  <h3>Hello, {{customer.name}}</h3>
+  <p>Email: {{customer.email}}</p>
+</div>
+<div class="container mt-5">
+  <h3>Looking for??</h3>
+  <div class="rectangular-container">
+    <a href="{{ url_for('cleaning_services') }}" class="square-box">Cleaning</a>
+    <a href="{{ url_for('ac_services') }}" class="square-box"
+      >Air Conditioner</a
+    >
+    <a href="{{url_for('cooking_services')}}" class="square-box">Cooking</a>
+    <a href="{{url_for('saloon_services')}}" class="square-box">Saloon</a>
+    <a href="{{url_for('garden_services')}}" class="square-box">Gardening</a>
+  </div>
 </div>
 
+<br /><br />
+
+<div class="container mt-4">
+  <h3>Service History:</h3>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Service Name</th>
+        <th>Professional name</th>
+        <th>Date of Request</th>
+        <th>Date of Completion</th>
+        <th>Status</th>
+        <th>Remarks</th>
+        <th>Actions</th>
+      </tr>
+    </thead> 
+    <tbody>
+      {% for request in service_history %}
+      <tr>
+        <td>{{ request.service.name }}</td>
+        <td>{{ request.professional.name or 'None'}}</td>
+        <td>{{ request.date_of_request }}</td>
+        <td>{{ request.date_of_completion or 'Pending' }}</td>
+        <td>{{ request.status }}</td>
+        <td>{{ request.remarks or 'None' }}</td>
+        <td>
+          
+          {% if request.status != 'Closed' %}
+          <a href="{{ url_for('close_service_request', request_id=request.id) }}" class="btn btn-warning">Close It</a>
+          {% else %}
+          Closed
+          {% endif %}
+
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="4">No service history available.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<button class="btn btn-primary">
+  <a href="{{url_for('logout')}}" style="color: white">Logout</a>
+</button>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 {% endblock %}
