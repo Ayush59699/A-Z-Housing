@@ -7,7 +7,7 @@
 
 {% block content %}
 
-
+<p>Your Expert Service: {{ current_user.service_name}}</p>
 
 <form method="POST" action="{{ url_for('professional_search') }}">
     <div>
@@ -18,7 +18,7 @@
             <option value="pincode">Pincode</option>
         </select>
     </div>
-
+ 
     <div>
         <label for="search_text">Search Text:</label>
         <input type="text" name="search_text" id="search_text" placeholder="Enter your search criteria" />
@@ -27,7 +27,7 @@
     <button type="submit">Search</button>
 </form>
 
-
+ 
 
 
 
@@ -37,21 +37,44 @@
     <table border="1" cellpadding="10">
         <thead>
             <tr>
-                <th>Customer</th>
+                <th>I.D.</th>
+                <th>Customer Name</th>
+                <th>Location</th>
                 <th>Service</th>
                 <th>Date of Request</th>
-                <th>Address</th>
-                <th>Pincode</th>
+                <th>Rating</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             {% for result in results %}
                 <tr>
+                    <td>{{result.id}}</td>
                     <td>{{ result.customer.name }}</td>
+                    <td>{{ result.customer.address }},{{ result.customer.pincode }}</td>
                     <td>{{ result.service.name }}</td>
                     <td>{{ result.date_of_request }}</td>
-                    <td>{{ result.customer.address }}</td>
-                    <td>{{ result.customer.pincode }}</td>
+                    <td>{{ result.rating or 'Not Rated' }}</td>
+                    <td>
+                        {% if result.status == 'Closed' %}
+                            <span class="text-muted">Closed</span>
+                        
+                        {% elif result.status =='accepted' %}
+                            <span class="text-muted">Accepted</span>
+
+                        {% else %}                        
+                        <form action="{{ url_for('accept_request', request_id=result.id) }}" method="post" class="action-form">
+                            <button type="submit" class="btn btn-success accept-btn">Accept</button>
+                        </form>
+
+                        <form action="{{ url_for('decline_request', request_id=result.id) }}" method="post" class="action-form">
+                            <button type="submit" class="btn btn-danger reject-btn">Decline</button>
+                        </form>
+                        {% endif %}
+                        
+                    </td>
+
+
                 </tr>
             {% endfor %}
         </tbody>
@@ -62,6 +85,49 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get all accept buttons
+        const acceptButtons = document.querySelectorAll('.accept-btn');
+        const rejectButtons = document.querySelectorAll('.reject-btn');
+
+        // Attach confirmation to Accept buttons
+        acceptButtons.forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent default form submission
+                const confirmed = confirm("Are you sure you want to accept this request?");
+                if (confirmed) {
+                    // Submit the form if the user confirms
+                    button.closest('form').submit();
+                }
+            });
+        });
+
+        // Attach confirmation to Reject buttons
+        rejectButtons.forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent default form submission
+                const confirmed = confirm("Are you sure you want to reject this request?");
+                if (confirmed) {
+                    // Submit the form if the user confirms
+                    button.closest('form').submit();
+                }
+            });
+        });
+    });
+</script>
 
 
 {% endblock %} 
