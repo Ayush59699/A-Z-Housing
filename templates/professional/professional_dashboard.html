@@ -29,12 +29,11 @@
                 <td>{{ request.service.description }}</td>
                 <td>{{ request.date_of_request }}</td>
                 <td>
-                    <!-- Accept Button with Confirmation -->
+
                     <form action="{{ url_for('accept_request', request_id=request.id) }}" method="post" class="action-form">
                         <button type="submit" class="btn btn-success accept-btn">Accept</button>
                     </form>
 
-                    <!-- Decline Button with Confirmation -->
                     <form action="{{ url_for('decline_request', request_id=request.id) }}" method="post" class="action-form">
                         <button type="submit" class="btn btn-danger reject-btn">Decline</button>
                     </form>
@@ -147,29 +146,25 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Get all accept buttons
+
         const acceptButtons = document.querySelectorAll('.accept-btn');
         const rejectButtons = document.querySelectorAll('.reject-btn');
 
-        // Attach confirmation to Accept buttons
         acceptButtons.forEach(button => {
             button.addEventListener('click', function(event) {
-                event.preventDefault(); // Prevent default form submission
+                event.preventDefault(); 
                 const confirmed = confirm("Are you sure you want to accept this request?");
                 if (confirmed) {
-                    // Submit the form if the user confirms
                     button.closest('form').submit();
                 }
             });
         });
 
-        // Attach confirmation to Reject buttons
         rejectButtons.forEach(button => {
             button.addEventListener('click', function(event) {
-                event.preventDefault(); // Prevent default form submission
+                event.preventDefault(); 
                 const confirmed = confirm("Are you sure you want to reject this request?");
                 if (confirmed) {
-                    // Submit the form if the user confirms
                     button.closest('form').submit();
                 }
             });
