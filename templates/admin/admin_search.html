@@ -1,6 +1,97 @@
-{% extends "admin/base_admin_dash.html"%}
+{% extends "admin/base_admin_dash.html"%} {% block greet%}
+{{aname.name|capitalize}} {% endblock %} {% block content %}
 
+<form method="POST" action="{{ url_for('admin_search') }}">
+  <div>
+    <label for="search_field">Search by:</label>
+    <select name="search_field" id="search_field">
+      <option value="" selected disabled>Select</option>
+      <option value="services">Services</option>
+      <option value="professionals">Professionals</option>
+      <option value="customers">Customers</option>
+      <option value="service_requests">Service Requests</option>
+    </select>
+  </div>
 
-{% block content %}
-<h2>hello from  admin dash search</h2>
-        {% endblock %} 
+  <div>
+    <label for="search_text">Search Text:</label>
+    <input
+      type="text"
+      name="search_text"
+      id="search_text"
+      placeholder="Enter search criteria"
+    />
+  </div>
+
+  <button type="submit">Search</button>
+</form>
+<hr />
+
+{% if results %}
+<h3>Search Results for {{ result_heading }}:</h3>
+<table border="1" cellpadding="10">
+  <thead>
+    <tr>
+      {% if search_field == "services" %}
+      <th>Service ID</th>
+      <th>Service Name</th>
+      <th>Price</th>
+      <th>Description</th>
+      {% elif search_field == "professionals" %}
+      <th>Professional ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Service Name</th>
+      <th>Experience(Yrs)</th>
+      {% elif search_field == "customers" %}
+      <th>Customer ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Address</th>
+      <th>Pincode</th>
+      {% elif search_field == "service_requests" %}
+      <th>Request ID</th>
+      <th>Service Name</th>
+      <th>Customer Name</th>
+      <th>Status</th>
+      <th>Date of Request</th>
+      {% endif %}
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for result in results %}
+    <tr>
+      {% if search_field == "services" %}
+      <td>{{ result.id }}</td>
+      <td>{{ result.name }}</td>
+      <td>{{ result.price }}</td>
+      <td>{{ result.description }}</td>
+      {% elif search_field == "professionals" %}
+      <td>{{ result.id }}</td>
+      <td>{{ result.name }}</td>
+      <td>{{ result.email }}</td>
+      <td>{{ result.service_name }}</td>
+      <td>{{ result.experience }}</td>
+      {% elif search_field == "customers" %}
+      <td>{{ result.id }}</td>
+      <td>{{ result.name }}</td>
+      <td>{{ result.email }}</td>
+      <td>{{ result.address }}</td>
+      <td>{{ result.pincode }}</td>
+      {% elif search_field == "service_requests" %}
+      <td>{{ result.id }}</td>
+      <td>{{ result.service.name }}</td>
+      <td>{{ result.customer.name }}</td>
+      <td>{{ result.status }}</td>
+      <td>{{ result.date_of_request }}</td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>No matching results found.</p>
+{% endif %}
+
+{% endblock %}
