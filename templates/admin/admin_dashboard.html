@@ -62,9 +62,7 @@
  
 
 
-<h3>Service REQUESTS : </h3>
-<br>
-<hr>
+
 
 
 
@@ -75,26 +73,26 @@
 
 <h3>Customers</h3>
 <table class="table">
-    <thead>
-        <tr>
+  <thead>
+    <tr>
             <th>Name</th>
             <th>Email</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for customer in customers %}
-        <tr>
+          </tr>
+        </thead>
+        <tbody>
+          {% for customer in customers %}
+          <tr>
             <td>{{ customer.name }}</td>
             <td>{{ customer.email }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      
+      
+      
 
-
-
-
-
+      
 
 
 
@@ -114,13 +112,42 @@
             <td>{{ professional.name }}</td>
             <td>{{ professional.email }}</td>
             <td>{{ professional.service_name }}</td>
-        </tr>
-        {% endfor %}
+          </tr>
+          {% endfor %}
     </tbody>
 </table>
 
   
-</div>
+          <h3>Service REQUESTS : </h3>
+          
+          <table border="1" cellpadding="10">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Assigned Professional</th>
+                    <th>Date of Request</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in ser_req %}
+                    <tr>
+                        <td>{{ req.id }}</td>
+                        <td>
+                            {% if req.professional %}
+                                {{ req.professional.name }}
+                            {% else %}
+                                Not Assigned
+                            {% endif %}
+                        </td>
+                        <td>{{ req.date_of_request }}</td>
+                        <td>{{ req.status }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+
+        </div>
 <br />
 <hr />
 
