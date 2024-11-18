@@ -1,35 +1,51 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block title%}Login page {% endblock %} {% block
+styles %}
+<link
+  rel="stylesheet"
+  href="{{url_for('static', filename='css/login-page-style.css')}}"
+/>
+{% endblock %} {%block content %}
 
 
-{% block title%}Login page {% endblock %}
 
-{%block content %}
 
-<h2>Login</h2>
-    <form method="POST" action="/login">
+
+
+<div class="container my-login" style="padding-left: 1in; padding-right: 1in;">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-8">
+      <h2>Login Here</h2>
+      <form method="POST" action="/login">
         {{ form.hidden_tag() }}
         <div>
-            <label for="email">Email:</label>
-            {{ form.email(size=32) }}
+          <label for="email">Email:</label>
+          {{ form.email(size=32) }}
         </div>
         <div>
-            <label for="password">Password:</label>
-            {{ form.password(size=32) }}
+          <label for="password">Password:</label>
+          {{ form.password(size=32) }}
         </div>
-        <div>
-            {{ form.submit() }}
-        </div>
-    </form>
-    <p>
+
+        <div>{{ form.submit() }}</div>
+
+      </form>
+      <p>
         <a href="/register">Create an Account</a>
-    </p>
-    <div>
+      </p>
+
+      <div>
         <button class="btn btn-primary">
-            <a href="/register-professional">Register as Professional</a>
+          <a href="/register-professional">Register as Professional</a>
         </button>
+      </div>
     </div>
+  </div>
+</div>
 
 
 
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 {%endblock%}
