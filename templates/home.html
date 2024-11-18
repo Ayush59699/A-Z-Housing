@@ -4,7 +4,25 @@
 
 
 {% block content %}
-<div class="container">
-    <h3><a href="{{url_for('login')}}">Let's get Started!</a></h3>
+
+<div class="container" style="width: 70%; margin: 0 auto;">
+
+    <h3>Welcome to A-Z Household Services</h3>
+    <p>Your one-stop solution for all your household needs. From plumbing and cleaning to electrical repairs and home maintenance, we’ve got you covered!</p>
+    <p>At A-Z Household Services, we provide reliable, affordable, and professional household services tailored to meet the needs of every home.</p>
+
+    
+    
+    
+    <a href="{{url_for('login')}}">
+        <button class="btn btn-primary btn-lg" style="height: 40px; width: 120px;;">
+            Let's get Started!
+        </button>
+    </a>
+
+
+        
 </div>
+
+
 {% endblock %}
