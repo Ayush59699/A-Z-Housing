@@ -23,11 +23,11 @@ class ProfessionalSignupForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired(), Length(min=6, max=80)])
     service_name=SelectField("Service Name", choices=[
         ('','Select'),
-        ('ac_repair',"AC Repair"),
-        ('saloon','Saloon'),
+        ('A.C. Repair',"A.C. Repair"),
+        ('Saloon','Saloon'),
         ('cooking','Cooking'),
         ('cleaning','Cleaning'),
-        ('gardening','Gardening')
+        ('Gardening','Gardening')
     ])
     experience = IntegerField('Experience (in years)', validators=[DataRequired()])
     document = FileField('Attach Document', validators=[DataRequired()])  # For document attachment
