@@ -4,38 +4,89 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title%}base Admin{% endblock %}</title>
+    {% block bootlink%} {% endblock %}
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     />
+
     <style>
       body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh; /* Ensure the body takes at least the full height of the viewport */
         font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
         background-color: #f8f9fa;
       }
-      .navbar {
-        background-color: #007bff;
+      header {
+        background-color: #c6e7ff;
+        color: #6482ad;
+        padding: 10px 20px;
+        text-align: center;
       }
-      .navbar-brand {
+      .container {
+        flex: 1;
+        padding: 20px;
+      }
+      footer {
+        filter: opacity(75%);
+        text-align: center;
+        padding: 10px 0;
+        background-color: #beb3a2;
         color: white;
-        font-weight: bold;
       }
-      .nav-link {
-        color: white !important;
-        font-size: 18px;
-      }
-      .nav-center {
-        display: flex;
-        justify-content: center;
-        width: 100%;
-      }
+
       .content {
         margin-top: 20px;
         padding: 20px;
         text-align: center;
+        flex: 1;
+      }
+      footer {
+        filter: opacity(75%);
+        text-align: center;
+        padding: 10px 0;
+        background-color: #beb3a2;
+        color: white;
+      }
+      .background-container {
+        background-image: url("{{ url_for('static', filename='img/admin-back.jpg') }}");
+        background-size: auto;
+        background-position: center;
+        background-repeat: repeat;
       }
 
-      .rectangular-container {
+      .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between; /* Ensure Welcome stays left and buttons stay centered */
+      }
+
+      .nav-center {
+        display: flex;
+        justify-content: center;
+        gap: 15px; /* Spacing between buttons */
+      }
+
+      button {
+        border: none;
+        padding: 10px 20px;
+        color: white;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 5px;
+      }
+
+      button a {
+        text-decoration: none;
+        color: white; /* Ensure the link text inside buttons is visible */
+      }
+      
+    </style>
+<!--
+.rectangular-container {
         padding: 20px;
         background-color: #f2f2f2;
         border: 1px solid #ccc;
@@ -60,39 +111,42 @@
       .square-box:hover {
         background-color: #45a049; /* Darker green on hover */
       }
-    </style>
+        -->
 
-    
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg">
+</head>
+  <body class="background-container">
+    <header>
+      <h1>A-Z Household Services</h1>
+      <nav class="navbar navbar-expand-lg">
+        <div class="nav-center d-flex justify-content-centre w-100">
+          <button style="background-color: #77a2b5">
+          <a class="nav-link" href="{{ url_for('customer_dashboard')}}">
+            Home</a
+          ></button>
+          <button style="background-color: #77a2b5">
+          <a class="nav-link" href="{{ url_for('customer_search')}}"> Search</a></button>
+
+          <button style="background-color: #77a2b5">
+          <a class="nav-link" href="{{ url_for('customer_summary')}}"
+            >Summary</a
+          ></button>
+
+          <button style="background-color: #77a2b5">
+          <a class="nav-link" href="{{ url_for('logout')}}">Logout</a></button>
+        
+        </div>
+      </nav>
       <a class="navbar-brand" href="#"
         >Welcome, {%block greet%} {{customer.name}} {% endblock %}</a
       >
-      <div class="nav-center">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('customer_dashboard')}}"
-              >Home</a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('customer_search')}}"
-              >Search</a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('customer_summary')}}"
-              >Summary</a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('logout')}}">Logout</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-
+    </header>
+    
+    
     <div class="content">{% block content %} {% endblock %}</div>
+    
+
+    <footer>
+      <p>&copy; 2024 A-Z Household Services. All rights reserved.</p>
+    </footer>
   </body>
 </html>
