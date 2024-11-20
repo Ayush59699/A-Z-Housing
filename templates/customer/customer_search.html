@@ -1,6 +1,22 @@
 {% extends "customer/base_customer_dash.html"%}
 
+{% block bootlink%}
+<style>
+  .form-inline {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-flow: row wrap;
+    flex-flow: row wrap;
+    -ms-flex-align: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+</style>
+{% endblock %}
+
+
 {% block content%}
+{% if not customer.is_blocked %}
 
 
 <div class="container">
@@ -50,5 +66,10 @@
   <p>Enter a search term to find services.</p>
   {% endif %} {% endif %}
 </div>
+
+
+{% else %}
+<h3>You are BLOCKED by the ADMIN.</h3>
+{% endif %}
 
 {% endblock %}
