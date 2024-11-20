@@ -1,122 +1,185 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head> 
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title%}base Admin{% endblock %}</title>
-    {% block bootlink %} {% endblock %}
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    />
+{% extends "admin/base_admin_dash.html"%}
 
-    <style>
-      body {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh; /* Ensure the body takes at least the full height of the viewport */
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f8f9fa;
-      }
-      header {
-        background-color: #c6e7ff;
-        color: #6482ad;
-        padding: 10px 20px;
-        text-align: center;
-      }
-      .container {
-        flex: 1;
-        padding: 20px;
-      }
-      footer {
-        filter: opacity(75%);
-        text-align: center;
-        padding: 10px 0;
-        background-color: #beb3a2;
-        color: white;
-      }
+{% block bootlink%}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+{% endblock %}
 
-      .content {
-        margin-top: 20px;
-        padding: 20px;
-        text-align: center;
-        flex: 1;
-      }
-      footer {
-        filter: opacity(75%);
-        text-align: center;
-        padding: 10px 0;
-        background-color: #beb3a2;
-        color: white;
-      }
-      .background-container {
-        background-image: url("{{ url_for('static', filename='img/admin-back.jpg') }}");
-        background-size: auto;
-        background-position: center;
-        background-repeat: repeat;
-      }
+{% block greet%}
+{{aname.name|capitalize}}
+{% endblock %}
 
-      .navbar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between; /* Ensure Welcome stays left and buttons stay centered */
-      }
 
-      .nav-center {
-        display: flex;
-        justify-content: center;
-        gap: 15px; /* Spacing between buttons */
-      }
 
-      button {
-        border: none;
-        padding: 10px 20px;
-        color: white;
-        cursor: pointer;
-        font-size: 16px;
-        border-radius: 5px;
-      }
 
-      button a {
-        text-decoration: none;
-        color: white; /* Ensure the link text inside buttons is visible */
-      }
-    </style>
-  </head>
+{% block content %}
 
-  <body class="background-container">
-    <header>
-      <h1>A-Z Household Services</h1>
-      <nav class="navbar navbar-expand-lg">
+<div class="container my-5">
+  <div class="row justify-content-center">
+
+    <div class="col-12 col-md-6 mb-4">
+      <h3 class="text-center">Service Request Status</h3>
+      <canvas id="statusChart" width="200" height="200"></canvas>
+    </div>
+
  
-        <div class="nav-center d-flex justify-content-centre w-100">
-          <button style="background-color: #77a2b5; ">
-            <a class="nav-link" href="{{ url_for('admin_dashboard')}}">Home</a>
-          </button>
-          <button style="background-color: #77a2b5">
-            <a class="nav-link" href="{{ url_for('admin_search')}}">Search</a>
-          </button>
-          <button style="background-color: #77a2b5">
-            <a class="nav-link" href="{{ url_for('admin_summary')}}">Summary</a>
-          </button>
-          <button style="background-color: #77a2b5">
-            <a class="nav-link" href="{{ url_for('logout')}}">Logout</a>
-          </button>
-        </div>
-         
-      </nav>
-      <a class="navbar-brand " href="#" style="color: rgb(2, 72, 92);">
-        Welcome, {%block greet%} demoname {% endblock %}</a
-      >
-    </header>
+    <div class="col-12 col-md-6 mb-4">
+      <h3 class="text-center">Customer Ratings</h3>
+      <canvas id="ratingsChart" width="200" height="200"></canvas>
+    </div>
 
-    <div class="content">{% block content %} {% endblock %}</div>
+    <div class="col-12 col-md-6 mb-4">
+      <h3 class="text-center">Most Popular Requests</h3>
+      <canvas id="mostRequestedServicesChart" width="200" height="200"></canvas>
+    </div>
 
-    <footer>
-      <p>&copy; 2024 A-Z Household Services. All rights reserved.</p>
-    </footer>
+    <div class="col-12 col-md-6 mb-4">
+      <h3 class="text-center">Average ratings by Service</h3>
+      <canvas id="averageRatingsChart" width="200" height="200"></canvas>
+    </div>
+  </div>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+  // Service request ka status chart
   
-  </body>
-</html>
+  const statusData = JSON.parse('{{ status_data | tojson }}');
+  const statusLabels = Object.keys(statusData);
+  const statusValues = Object.values(statusData);
+  const statusCtx = document.getElementById('statusChart').getContext('2d');
+
+  new Chart(statusCtx, {
+    type: 'pie',
+    data: {
+      labels: statusLabels,
+      datasets: [{
+        label: 'Requests',
+        data: statusValues,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.6)',
+          'rgba(54, 162, 235, 0.6)',
+          'rgba(255, 206, 86, 0.6)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true
+    }
+  });
+
+  
+  //Customer Ratings ka Chart
+  
+  const ratingsData = JSON.parse('{{ ratings_data | tojson }}');
+  const ratingsLabels = Object.keys(ratingsData);
+  const ratingsValues = Object.values(ratingsData);
+  const ratingsCtx = document.getElementById('ratingsChart').getContext('2d');
+
+  new Chart(ratingsCtx, {
+    type: 'bar',
+    data: {
+      labels: ratingsLabels,
+      datasets: [{
+        label: 'Number of Ratings',
+        data: ratingsValues,
+        backgroundColor: 'rgba(65, 142, 182, 0.6)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            stepSize: 1,
+            precision: 0
+          }
+        }
+      }
+    }
+  });
+
+
+  //Most Popular requests Chart
+  
+  const services = JSON.parse('{{ services | tojson}}');
+  const requestsCountDataJson = '{{ requests_count | tojson }}';
+  const requestsCount = JSON.parse(requestsCountDataJson);
+  const popularctx = document.getElementById('mostRequestedServicesChart').getContext('2d');
+
+  new Chart(popularctx, {
+    type: 'bar',
+    data: {
+      labels: services,
+      datasets: [{
+        label: "Number of Requests",
+        data: requestsCount,
+        backgroundColor: 'rgba(75,166,152,0.6)',
+        borderColor: 'black',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            stepsize: 1,
+            precision: 0
+          }
+        }
+      }
+    }
+  })
+
+  //Average ratings of Service Chart
+  
+  const rat_servicesDataJson = '{{ services | tojson }}';
+  const rat_services = JSON.parse(rat_servicesDataJson)
+  const avgRatingsDataJson = '{{ avg_ratings | tojson }}';
+  const avgRatings = JSON.parse(avgRatingsDataJson)
+  const ratingctx = document.getElementById('averageRatingsChart').getContext('2d');
+
+  new Chart(ratingctx, {
+    type: 'bar',
+    data: {
+      labels: rat_services,
+      datasets: [{
+        label: 'Average Rating',
+        data: avgRatings,
+        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+        borderColor: 'black',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            stepSize: 1,
+            max: 5,
+            precision: 0
+          }
+        }
+      }
+    }
+  });
+
+
+</script>
+
+{% endblock %}
