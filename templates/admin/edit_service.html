@@ -5,8 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Service</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .background-container {
+        background-image: url("{{ url_for('static', filename='img/admin-back.jpg') }}");
+        background-size: auto;
+        background-position: center;
+        background-repeat: repeat;
+      }
+    </style>
 </head>
-<body>
+<body class="background-container">
     <div class="container mt-5">
         <h1>Edit Service</h1>
         <form method="POST">
