@@ -3,7 +3,7 @@
 
 <form method="POST" action="{{ url_for('admin_search') }}">
   <div>
-    <label for="search_field">Search by:</label>
+    <label for="search_field"><b>Search by:</b></span></label>
     <select name="search_field" id="search_field">
       <option value="" selected disabled>Select</option>
       <option value="services">Services</option>
@@ -12,9 +12,9 @@
       <option value="service_requests">Service Requests</option>
     </select>
   </div>
-
+<br>
   <div>
-    <label for="search_text">Search Text:</label>
+    <label for="search_text"><b>Search Text:</b></label>
     <input
       type="text"
       name="search_text"
@@ -22,15 +22,17 @@
       placeholder="Enter search criteria"
     />
   </div>
-
-  <button type="submit">Search</button>
+<br>
+  <button type="submit" class="btn btn-primary">Search</button>
 </form>
 <hr />
 
-{% if results %}
+
+<div class="container justify-content-centre">
+  {% if results %}
 <h3>Search Results for {{ result_heading }}:</h3>
-<table border="1" cellpadding="10">
-  <thead>
+<table border="1" cellpadding="10" class="table table-info table-bordered table-hover">
+  <thead class="table-dark">
     <tr>
       {% if search_field == "services" %}
       <th>Service ID</th>
@@ -61,18 +63,30 @@
 
   <tbody>
     {% for result in results %}
+
     <tr>
       {% if search_field == "services" %}
+
+
       <td>{{ result.id }}</td>
       <td>{{ result.name }}</td>
       <td>{{ result.price }}</td>
       <td>{{ result.description }}</td>
-      {% elif search_field == "professionals" %}
+
+      {% elif search_field == "professionals" %} 
+      
+      {% if result.is_valid==True %}
+
       <td>{{ result.id }}</td>
       <td>{{ result.name }}</td>
       <td>{{ result.email }}</td>
       <td>{{ result.service_name }}</td>
       <td>{{ result.experience }}</td>
+      {% else %}
+        No matched Professionals 
+      {% endif %} 
+
+
       {% elif search_field == "customers" %}
       <td>{{ result.id }}</td>
       <td>{{ result.name }}</td>
@@ -90,8 +104,9 @@
     {% endfor %}
   </tbody>
 </table>
+
+
+</div>
 {% else %}
 <p>No matching results found.</p>
-{% endif %}
-
-{% endblock %}
+{% endif %} {% endblock %}
