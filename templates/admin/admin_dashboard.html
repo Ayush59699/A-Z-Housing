@@ -7,14 +7,124 @@
 {% endblock %} {% block greet%} {{admin.name}} {% endblock %} {% block content%}
 
 <div class="container">
-  <h2>Hello, {{admin.name}}</h2>
-  <h3>Email: {{ admin.email }}</h3>
+  <h2>Hello {{admin.name|capitalize}}.  Welcome back!</h2>
+  <br> <br>
 
+  <h3>NEW Service Professionals Requests</h3>
+
+  <table class="table table-primary  table-hover table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th>Professional ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Service Name</th>
+        <th><b>Action</b></th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for pros in newPros %}
+      <tr>
+        <td><a href="{{ url_for('view_pro_details', professional_id=pros.id) }}">{{ pros.id }}</a></td>
+        <td>{{ pros.name }}</td>
+        <td>{{ pros.email }}</td>
+        <td>{{ pros.service_name }}</td>
+        <td>
+          <form method="POST" action="{{ url_for('approve_professional', professional_id=pros.id) }}" style="display:inline;">
+            <button type="submit" onclick="showAcceptedAlert()" class="btn btn-success btn-sm">Approve</button>
+        </form>
+        <form method="POST" action="{{ url_for('reject_professional', professional_id=pros.id) }}" style="display:inline;">
+          <button type="submit" onclick="showRejectedAlert()" class="btn btn-warning btn-sm">Reject</button>
+        </form>
+        <form method="POST" action="{{ url_for('delete_professional', professional_id=pros.id) }}" style="display:inline;">
+          <button type="submit" onclick="showDeletedAlert()" class="btn btn-danger btn-sm">Delete</button>
+        </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+<br><br>
+
+  <h3>Rejected Service Professionals Requests</h3>
+  <table class="table table-secondary table-hover table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th>Professional ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Service Name</th>
+        <th><b>Action</b></th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for pros in rejectedProfessionals %}
+      <tr>
+        <td><a href="{{ url_for('view_pro_details', professional_id=pros.id) }}">{{ pros.id }}</a></td>
+        <td>{{ pros.name }}</td>
+        <td>{{ pros.email }}</td>
+        <td>{{ pros.service_name }}</td>
+        <td>
+          <form method="POST" action="{{ url_for('approve_professional', professional_id=pros.id) }}" style="display:inline;">
+            <button type="submit" onclick="showAcceptedAlert()" class="btn btn-success btn-sm">Approve</button>
+        </form>
+        
+        <form method="POST" action="{{ url_for('delete_professional', professional_id=pros.id) }}" style="display:inline;">
+          <button type="submit" onclick="showDeletedAlert()" class="btn btn-danger btn-sm">Delete</button>
+        </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+
+<br> <br>
+  <h3>Service Professionals</h3>
+  <table class="table table table-info table-hover table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th>Professional ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Service Name</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for professional in professionals %}
+      <tr>
+        <td><a href="{{ url_for('view_pro_details', professional_id=professional.id) }}">{{ professional.id }}</a></td>
+        <td>{{ professional.name }}</td>
+        <td>{{ professional.email }}</td>
+        <td>{{ professional.service_name }}</td>
+        <td>
+
+          {% if professional.is_blocked %}
+
+          <form method="POST" action="{{ url_for('unblock_professional', professional_id=professional.id) }}" style="display:inline;">
+            <button type="submit" onclick="B_U_Pro()" class="btn btn-success btn-sm">Unblock</button>
+          </form>
+          
+          {% else %}
+
+          <form method="POST" action="{{ url_for('block_professional', professional_id=professional.id) }}" style="display:inline;">
+            <button type="submit" onclick="B_U_Pro()" class="btn btn-danger btn-sm">Block</button>
+          </form>
+        {% endif %}
+
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
   <div class="container mt-5">
-    
     <h2>Services Available</h2>
-    <table class="table">
-      <thead>
+    <table class="table table table-primary table-hover table-bordered">
+      <thead class="table-dark">
         <tr>
           <th>Service ID</th>
           <th>Service Name</th>
@@ -32,7 +142,8 @@
             <a
               href="{{ url_for('edit_service', id=service.id) }}"
               class="btn btn-warning btn-sm"
-              >Edit</a>
+              >Edit</a
+            >
 
             <form
               action="{{ url_for('delete_service', id=service.id) }}"
@@ -53,104 +164,102 @@
       </tbody>
     </table>
     <a href="{{ url_for('add_service') }}" class="btn btn-primary mb-3"
-      >Add Service</a>
+      >Add Service</a
+    >
   </div>
-<br>
+  <br />
 
 
 
- 
-
-
-
-
-
-
-
-
-
-
-
-<h3>Customers</h3>
-<table class="table">
-  <thead>
-    <tr>
-            <th>Name</th>
-            <th>Email</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for customer in customers %}
-          <tr>
-            <td>{{ customer.name }}</td>
-            <td>{{ customer.email }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      
-      
-      
-
-      
-
-
-
-
-<h3>Service Professionals</h3>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Service Name</th>
-        </tr>
+  <h3>Customers</h3>
+  <table class="table table table-secondary table-hover table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Action</th>
+      </tr>
     </thead>
     <tbody>
-        {% for professional in professionals %}
-        <tr>
-            <td>{{ professional.name }}</td>
-            <td>{{ professional.email }}</td>
-            <td>{{ professional.service_name }}</td>
-          </tr>
-          {% endfor %}
+      {% for customer in customers %}
+      <tr>
+        <td>{{ customer.name }}</td>
+        <td>{{ customer.email }}</td>
+        <td>
+
+          {% if customer.is_blocked %}
+            <form method="POST" action="{{ url_for('unblock_customer', customer_id=customer.id) }}" style="display:inline;">
+              <button type="submit" onclick="B_U_Pro()" class="btn btn-success btn-sm">Unblock</button>
+            </form>
+
+          {% else %}
+
+            <form method="POST" action="{{ url_for('block_customer', customer_id=customer.id) }}" style="display:inline;">
+              <button type="submit" onclick="B_U_Pro()" class="btn btn-danger btn-sm">Block</button>
+            </form>
+
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
     </tbody>
-</table>
+  </table>
 
+
+  <h3>Service REQUESTS :</h3>
   
-          <h3>Service REQUESTS : </h3>
-          
-          <table border="1" cellpadding="10">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Assigned Professional</th>
-                    <th>Date of Request</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for req in ser_req %}
-                    <tr>
-                        <td>{{ req.id }}</td>
-                        <td>
-                            {% if req.professional %}
-                                {{ req.professional.name }}
-                            {% else %}
-                                Not Assigned
-                            {% endif %}
-                        </td>
-                        <td>{{ req.date_of_request }}</td>
-                        <td>{{ req.status }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-          </table>
-
-        </div>
+  <table border="1" cellpadding="10" class="table table table-info table-hover table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Assigned Professional</th>
+        <th>Date of Request</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for req in ser_req %}
+      <tr>
+        <td>{{ req.id }}</td>
+        <td>
+          {% if req.professional %} {{ req.professional.name }} {% else %} Not
+          Assigned {% endif %}
+        </td>
+        <td>{{ req.date_of_request }}</td>
+        <td>{{ req.status }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 <br />
 <hr />
 
 <a href="{{url_for('logout')}}" class="btn btn-primary">Logout</a>
+
+
+
+
+<script>
+  function showAcceptedAlert() {
+  alert("Professional Accepted Successfully!");
+  }
+</script>
+<script>
+  function showDeletedAlert() {
+  alert("Professional Request Deleted Successfully!");
+  }
+</script>
+<script>
+  function showRejectedAlert() {
+  alert("Professional Rejected!");
+  }
+</script>
+<script>
+  function B_U_Pro() {
+  alert("Are you sure?!");
+  }
+</script>
+
 
 {% endblock %}
