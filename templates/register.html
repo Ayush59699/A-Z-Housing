@@ -5,35 +5,43 @@
 
 {% block content %}
 
-<h2>Register</h2>
-    <form method="POST" action="/register">
-        {{ form.hidden_tag() }}
-        <div>
-            <label for="fullname">Fullname</label>
-            {{ form.fullname(size=32) }}
+
+
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card p-4 shadow" style="width: 24rem;">
+        <h2 class="text-center mb-4">Register Here</h2>
+
+        <form method="POST" action="/register">
+            {{ form.hidden_tag() }}
+            <div class="mb-3">
+                <label for="fullname" class="form-label">Fullname</label>
+                {{ form.fullname(class='form-control', placeholder='Enter Full Name', size=32) }}
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                {{ form.email(class='form-control', placeholder='Email',size=32) }}
         </div>
-        <div>
-            <label for="email">Email</label>
-            {{ form.email(size=32) }}
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            {{ form.password(class='form-control', placeholder='Password',size=32) }}
         </div>
-        <div>
-            <label for="password">Password</label>
-            {{ form.password(size=32) }}
+        <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            {{ form.address(class='form-control', placeholder='Enter your address',size=32) }}
         </div>
-        <div>
-            <label for="address">Address</label>
-            {{ form.address(size=32) }}
+        <div class="mb-3">
+            <label for="pincode" class="form-label">Pincode</label>
+            {{ form.pincode(class='form-control', placeholder='Pincode',size=32) }}
         </div>
-        <div>
-            <label for="pincode">Pincode</label>
-            {{ form.pincode(size=32) }}
-        </div>
-        <div>
-            {{ form.submit() }}
+        <div class="mb-3">
+            {{ form.submit(type='submit',class='btn btn-primary') }}
         </div>
     </form>
     
-
+    
+    
+        </div>
+    </div>
 
 
 
