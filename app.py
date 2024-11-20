@@ -3,11 +3,13 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import or_ , func
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from models import db, Admin, Customer, Professional, Service, ServiceRequest
-from forms import LoginForm, RegisterForm, ServiceForm,ProfessionalSignupForm
+from forms import LoginForm, RegisterForm,ProfessionalSignupForm
 import os, uuid
 from datetime import datetime
 from werkzeug.utils import secure_filename
 from collections import Counter
+
+
 
 
 app = Flask(__name__)
@@ -21,6 +23,7 @@ if not os.path.exists(UPLOAD_FOLDER):
 basedir=os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] =  f"sqlite:///{os.path.join(basedir, 'instance', 'db.sqlite')}"
 app.config['SECRET_KEY'] = 'my-secret-key'
+
 
 db.init_app(app)
 login_manager = LoginManager()
@@ -278,22 +281,12 @@ def unblock_customer(customer_id):
 
 
 
-
-
-
-
-
-
-
-
 @app.route('/admin/dashboard/validate_pro_details/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(os.path.join(current_app.root_path, 'uploads'), filename)
 
 
-
-
-@app.route('/admin/dashboard/search', methods=["GET","POST"]) # ADMIN DASHBOARD SEARCH
+@app.route('/admin/dashboard/search', methods=["GET","POST"]) 
 @login_required
 def admin_search():
     if not isinstance(current_user, Admin):
@@ -335,7 +328,7 @@ def admin_search():
     )
     
 
-@app.route('/admin/dashboard/summary', methods=["GET","POST"]) # ADMIN DASHBOARD Summary
+@app.route('/admin/dashboard/summary', methods=["GET","POST"]) 
 @login_required
 def admin_summary():
     
@@ -399,7 +392,7 @@ def customer_dashboard():
     return render_template('customer/customer_dashboard.html', customer=current_user, service_history=service_history)
 
 
-@app.route('/customer/dashboard/search', methods=["GET","POST"]) # CUSTOMER DASH search
+@app.route('/customer/dashboard/search', methods=["GET","POST"]) 
 @login_required
 def customer_search():
     if not isinstance(current_user, Customer):
@@ -424,7 +417,7 @@ def customer_search():
 
 
 
-@app.route('/customer/dashboard/summary') # CUSTOMER DASH summary
+@app.route('/customer/dashboard/summary') 
 @login_required
 def customer_summary():
     if not isinstance(current_user, Customer):
@@ -558,7 +551,7 @@ def close_service_request(request_id):
 
     return render_template('customer/close_service_request.html', 
                            service_request=service_request,
-                           professional=professional
+                           professional=professional, customer=current_user
                            )
 
 
@@ -682,7 +675,7 @@ def professional_summary():
         .all()
     )
     ratings_data = {str(rating): count for rating, count in rating_counts}
-
+    
     return render_template('professional/professional_summary.html', 
                            status_data=status_data,
                            professional=current_user,
