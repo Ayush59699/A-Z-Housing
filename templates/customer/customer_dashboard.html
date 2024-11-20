@@ -1,20 +1,104 @@
 {% extends "customer/base_customer_dash.html"%} {% block title%}Customer Dash {%
-endblock %} {% block greet%} {{customer.name}} {% endblock %} {% block content%}
+endblock %} {% block greet%} {{customer.name}} {% endblock %} {% block
+bootlink%}
+<style></style>
+{% endblock %} {% block content%} {% if not customer.is_blocked %}
 
 <div class="container">
-  <h3>Hello, {{customer.name}}</h3>
-  <p>Email: {{customer.email}}</p>
+  <h3>Hello, {{customer.name}}!</h3>
+  <h5>How can we help you?</h5>
 </div>
+
 <div class="container mt-5">
   <h3>Looking for??</h3>
-  <div class="rectangular-container">
-    <a href="{{ url_for('cleaning_services') }}" class="square-box">Cleaning</a>
-    <a href="{{ url_for('ac_services') }}" class="square-box"
-      >Air Conditioner</a
-    >
-    <a href="{{url_for('cooking_services')}}" class="square-box">Cooking</a>
-    <a href="{{url_for('saloon_services')}}" class="square-box">Saloon</a>
-    <a href="{{url_for('garden_services')}}" class="square-box">Gardening</a>
+
+  <div class="row">
+    <div class="col-md-4 mb-4">
+      <div class="card" style="width: 18rem">
+        <img
+          src="{{ url_for('static', filename='img/car-img3.jpg')}}"
+          class="card-img-top"
+          alt="first_card"
+        />
+        <div class="card-body">
+          <h5 class="card-title">Cleaning Services</h5>
+          <p class="card-text">Customized house cleaning packages.</p>
+          <a href="{{ url_for('cleaning_services') }}" class="btn btn-primary"
+            >Explore</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+      <div class="card" style="width: 18rem">
+        <img
+          src="{{ url_for('static', filename='img/car-img6.jpg')}}"
+          class="card-img-top"
+          alt="first_card"
+        />
+        <div class="card-body">
+          <h5 class="card-title">Air Conditioner Services</h5>
+          <p class="card-text">Customized A.C. cleaning packages.</p>
+          <a href="{{ url_for('ac_services') }}" class="btn btn-primary"
+            >Explore</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+      <div class="card" style="width: 18rem">
+        <img
+          src="{{ url_for('static', filename='img/car-img4.jpg')}}"
+          class="card-img-top"
+          alt="first_card"
+        />
+        <div class="card-body">
+          <h5 class="card-title">Cooking Services</h5>
+          <p class="card-text">Customized cooking packages.</p>
+          <a href="{{url_for('cooking_services')}}" class="btn btn-primary"
+            >Explore</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 mb-4">
+      <div class="card" style="width: 18rem">
+        <img
+          src="{{ url_for('static', filename='img/car-img5.jpg')}}"
+          class="card-img-top"
+          alt="first_card"
+        />
+        <div class="card-body">
+          <h5 class="card-title">Saloon Services</h5>
+          <p class="card-text">Customized home saloon packages.</p>
+          <a href="{{url_for('saloon_services')}}" class="btn btn-primary"
+            >Explore</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card" style="width: 18rem">
+        <img
+          src="{{ url_for('static', filename='img/car-img2.jpg')}}"
+          class="card-img-top"
+          alt="first_card"
+        />
+        <div class="card-body">
+          <h5 class="card-title">Gardening Services</h5>
+          <p class="card-text">Customized gardening packages.</p>
+          <a href="{{url_for('garden_services')}}" class="btn btn-primary"
+            >Explore</a
+          >
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -22,8 +106,8 @@ endblock %} {% block greet%} {{customer.name}} {% endblock %} {% block content%}
 
 <div class="container mt-4">
   <h3>Service History:</h3>
-  <table class="table table-bordered">
-    <thead>
+  <table class="table table-bordered table-hover table-success">
+    <thead class="table-dark">
       <tr>
         <th>Service Name</th>
         <th>Professional name</th>
@@ -33,7 +117,7 @@ endblock %} {% block greet%} {{customer.name}} {% endblock %} {% block content%}
         <th>Remarks</th>
         <th>Actions</th>
       </tr>
-    </thead> 
+    </thead>
     <tbody>
       {% for request in service_history %}
       <tr>
@@ -44,13 +128,13 @@ endblock %} {% block greet%} {{customer.name}} {% endblock %} {% block content%}
         <td>{{ request.status }}</td>
         <td>{{ request.remarks or 'None' }}</td>
         <td>
-          
           {% if request.status != 'Closed' %}
-          <a href="{{ url_for('close_service_request', request_id=request.id) }}" class="btn btn-warning">Close It</a>
-          {% else %}
-          Closed
-          {% endif %}
-
+          <a
+            href="{{ url_for('close_service_request', request_id=request.id) }}"
+            class="btn btn-warning"
+            >Close It</a
+          >
+          {% else %} Closed {% endif %}
         </td>
       </tr>
       {% else %}
@@ -63,12 +147,14 @@ endblock %} {% block greet%} {{customer.name}} {% endblock %} {% block content%}
 </div>
 
 <button class="btn btn-primary">
-  <a href="{{url_for('logout')}}" style="color: white">Logout</a>
+  <a href="{{ url_for('logout') }}" style="color: white">Logout</a>
 </button>
 
-<!-- Bootstrap JS and dependencies -->
+{% else %}
+<h3>You are BLOCKED by the ADMIN.</h3>
+{% endif %}
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 {% endblock %}
