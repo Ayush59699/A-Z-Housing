@@ -1,77 +1,91 @@
-{% extends "professional/base_professional_dash.html"%}
-
-{% block title%}Professionals Dash {% endblock %}
-
-{% block greet%} {{professional.name}} {% endblock %}
-
-{% block content%}
+{% extends "professional/base_professional_dash.html"%} {% block
+title%}Professionals Dash {% endblock %} {% block greet%} {{professional.name}}
+{% endblock %} {% block content%}
 
 <div class="container">
-    <h2>Hello, {{professional.name}}</h2>
-    <p>Your Expertise Service: {{ current_user.service_name}}</p>
+  {% if professional.is_valid %} 
+  {% if not professional.is_blocked %}
+ 
+  <h2>Hello, {{professional.name}}</h2>
+  <p>What brings you here today!</p>
+<br>
+  <h3>Available Service Requests</h3>
+  <table class="table table-bordered  table-info table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>Customer Name</th>
+        <th>Service</th>
+        <th>Description</th>
+        <th>Date Requested</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for request in service_requests %}
+      <tr>
+        <td>{{ request.customer.name }}</td>
+        <td>{{ request.service.name }}</td>
+        <td>{{ request.service.description }}</td>
+        <td>{{ request.date_of_request }}</td>
+        <td>
+          <form
+            action="{{ url_for('accept_request', request_id=request.id) }}"
+            method="post"
+            class="action-form"
+          >
+            <button type="submit" class="btn btn-success accept-btn">
+              Accept
+            </button>
+          </form>
 
-    <h3>Available Service Requests</h3>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Customer Name</th>
-                <th>Service</th>
-                <th>Description</th>
-                <th>Date Requested</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for request in service_requests %}
-            <tr>
-                <td>{{ request.customer.name }}</td>
-                <td>{{ request.service.name }}</td>
-                <td>{{ request.service.description }}</td>
-                <td>{{ request.date_of_request }}</td>
-                <td>
+          <form
+            action="{{ url_for('decline_request', request_id=request.id) }}"
+            method="post"
+            class="action-form"
+          >
+            <button type="submit" class="btn btn-danger reject-btn">
+              Decline
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="5">No matching requests available.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
-                    <form action="{{ url_for('accept_request', request_id=request.id) }}" method="post" class="action-form">
-                        <button type="submit" class="btn btn-success accept-btn">Accept</button>
-                    </form>
+  <h3>Accepted Requests</h3>
+  <table class="table table-bordered  table-info table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>Customer Name</th>
+        <th>Service</th>
+        <th>Description</th>
+        <th>Date Requested</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for request in accepted_requests %}
+      <tr>
+        <td>{{ request.customer.name }}</td>
+        <td>{{ request.service.name }}</td>
+        <td>{{ request.service.description }}</td>
+        <td>{{ request.date_of_request }}</td>
+        <td>{{request.status}}</td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="4">No accepted requests.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
-                    <form action="{{ url_for('decline_request', request_id=request.id) }}" method="post" class="action-form">
-                        <button type="submit" class="btn btn-danger reject-btn">Decline</button>
-                    </form>
-                </td>
-            </tr>
-            {% else %}
-            <tr><td colspan="5">No matching requests available.</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <h3>Accepted Requests</h3>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Customer Name</th>
-                <th>Service</th>
-                <th>Description</th>
-                <th>Date Requested</th>
-                <th> Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for request in accepted_requests %}
-            <tr>
-                <td>{{ request.customer.name }}</td>
-                <td>{{ request.service.name }}</td>
-                <td>{{ request.service.description }}</td>
-                <td>{{ request.date_of_request }}</td>
-                <td>{{request.status}}</td>
-            </tr>
-            {% else %}
-            <tr><td colspan="4">No accepted requests.</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-<!--
+  <!--
         <h3>Rejected Requests</h3>
     <table class="table table-bordered">
         <thead>
@@ -99,77 +113,47 @@
     </table>
 -->
 
+  {% else %}
+  <h3>You are BLOCKED by ADMIN.</h3>
 
+  {% endif %} 
+  {% else %}
+  <h2>Account under Verification. Please Wait for some time.</h2>
+  {% endif %}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <hr>
-    <a href="{{url_for('logout')}}" class="btn btn-primary">Logout</a>
+  <hr />
+  <a href="{{url_for('logout')}}" class="btn btn-primary">Logout</a>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener("DOMContentLoaded", function () {
+    const acceptButtons = document.querySelectorAll(".accept-btn");
+    const rejectButtons = document.querySelectorAll(".reject-btn");
 
-        const acceptButtons = document.querySelectorAll('.accept-btn');
-        const rejectButtons = document.querySelectorAll('.reject-btn');
-
-        acceptButtons.forEach(button => {
-            button.addEventListener('click', function(event) {
-                event.preventDefault(); 
-                const confirmed = confirm("Are you sure you want to accept this request?");
-                if (confirmed) {
-                    button.closest('form').submit();
-                }
-            });
-        });
-
-        rejectButtons.forEach(button => {
-            button.addEventListener('click', function(event) {
-                event.preventDefault(); 
-                const confirmed = confirm("Are you sure you want to reject this request?");
-                if (confirmed) {
-                    button.closest('form').submit();
-                }
-            });
-        });
+    acceptButtons.forEach((button) => {
+      button.addEventListener("click", function (event) {
+        event.preventDefault();
+        const confirmed = confirm(
+          "Are you sure you want to accept this request?"
+        );
+        if (confirmed) {
+          button.closest("form").submit();
+        }
+      });
     });
+
+    rejectButtons.forEach((button) => {
+      button.addEventListener("click", function (event) {
+        event.preventDefault();
+        const confirmed = confirm(
+          "Are you sure you want to reject this request?"
+        );
+        if (confirmed) {
+          button.closest("form").submit();
+        }
+      });
+    });
+  });
 </script>
 
 {% endblock %}
