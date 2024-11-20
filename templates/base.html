@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}Home{% endblock %}</title>
-    <meta http-equiv="refresh" content="10" />
+    <meta http-equiv="refresh" content="100" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     {% block styles %} {% endblock %}
     <style>
       body {
@@ -28,11 +29,8 @@
       }
       nav a {
         color: rgb(63, 45, 45);
-        margin: 0 10px;
+        margin:  10px;
         text-decoration: none;
-      }
-      nav a:hover {
-        text-decoration: underline;
       }
       .container {
         flex: 1;
@@ -44,19 +42,17 @@
         padding: 10px 0;
         background-color: #beb3a2;
         color: white;
-      }
+      } 
       .background-container {
-        background-image: url("{{ url_for('static', filename='img/car-img0.jpg') }}"); /* Path to your image */
-        background-size: cover; /* Ensures the image covers the entire container */
-        background-position: center; /* Centers the image */
-        background-repeat: no-repeat; /* Prevents tiling */
-        height: 500px; /* Adjust height as needed */
+        background-image: url("{{ url_for('static', filename='img/car-img0.jpg') }}"); 
+        background-size: cover;  
+        background-position: center;  
+        background-repeat: no-repeat;  
+        height: 500px;  
       }
     </style>
   </head>
-  <body
-    class="background-container d-flex justify-content-center align-items-center text-white"
-  >
+  <body class="background-container">
     <header>
       <h1>A-Z Household Services</h1>
       <nav>
@@ -74,14 +70,23 @@
       </nav>
     </header>
 
-    <div class="container">
+    
       {% block content %}
       
       {% endblock %}
-    </div>
-
+    
+      
     <footer>
       <p>&copy; 2024 A-Z Household Services. All rights reserved.</p>
     </footer>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
   </body>
 </html>
