@@ -3,12 +3,15 @@
 {% block title%}Professional Dash Search {% endblock %}
 
 {% block greet%} {{professional.name}} {% endblock %}
-
+ 
 
 {% block content %}
 
-<p>Your Expert Service: {{ current_user.service_name}}</p>
+{% if professional.is_valid %}
+{% if not professional.is_blocked %}
 
+<p>Your Expert Service: {{ current_user.service_name}}</p>
+<h4>Search for Service requests</h4> <br>
 <form method="POST" action="{{ url_for('professional_search') }}">
     <div>
         <label for="search_field">Search by:</label>
@@ -18,13 +21,13 @@
             <option value="pincode">Pincode</option>
         </select>
     </div>
- 
+ <br>
     <div>
         <label for="search_text">Search Text:</label>
         <input type="text" name="search_text" id="search_text" placeholder="Enter your search criteria" />
     </div>
-    
-    <button type="submit">Search</button>
+    <br>
+    <button type="submit" class="btn btn-primary">Search</button>
 </form>
 
  
@@ -34,8 +37,8 @@
 
 {% if results %}
     <h3>Search Results:</h3>
-    <table border="1" cellpadding="10">
-        <thead>
+    <table border="1" cellpadding="10" class="table table-bordered  table-primary table-hover">
+        <thead class="table-dark">
             <tr>
                 <th>I.D.</th>
                 <th>Customer Name</th>
@@ -129,5 +132,12 @@
     });
 </script>
 
+{% else %}
+  <h3>You are BLOCKED by ADMIN.</h3>
 
+  {% endif %} 
+  {% else %}
+  <h2>Account under Verification. Please Wait for some time.</h2>
+  {% endif %}
+  
 {% endblock %} 
