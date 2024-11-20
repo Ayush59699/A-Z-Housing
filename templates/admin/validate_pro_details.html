@@ -1,0 +1,64 @@
+{% extends "admin/base_admin_dash.html"%}
+
+{% block title%}Admin Dash {% endblock%} 
+{% block bootlink %}<link
+  rel="stylesheet"
+  href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+{% endblock %}
+
+{% block greet%} {{admin.name}} {% endblock %} 
+
+
+{% block content%}
+<div class="container justify-content-center">
+    
+<h2>Professional Details</h2>
+<table class="table table-info table-bordered table-hover">
+    <tr>
+        <th>Full Name</th>
+        <td>{{ professional.name }}</td>
+    </tr>
+    <tr>
+        <th>Email</th>
+        <td>{{ professional.email }}</td>
+    </tr>
+    <tr>
+        <th>Service Provided</th>
+        <td>{{ professional.service_name }}</td>
+    </tr>
+    <tr>
+        <th>Experience(Yrs)</th>
+        <td>{{ professional.experience }}</td>
+    </tr>
+    <tr>
+        <th>Document/Proof</th>
+        <td>{% if professional.document %}
+                <a href="{{ url_for('uploaded_file', filename=professional.document) }}" target="_blank">View Document</a>
+            {% else %}
+            <p>No Document Uploaded</p>
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th>Address</th>
+        <td>{{ professional.address }}</td>
+    </tr>
+    <tr>
+        <th>Pincode</th>
+        <td>{{ professional.pincode }}</td>
+    </tr>
+    
+</table>
+
+
+
+<a href="{{ url_for('admin_dashboard')}}" style="color: aliceblue;">
+    <button class="btn-secondary">Go Back</button>
+</a>
+
+    
+
+</div>
+
+  
+{% endblock %}
