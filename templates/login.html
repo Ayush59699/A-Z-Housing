@@ -5,38 +5,36 @@ styles %}
   href="{{url_for('static', filename='css/login-page-style.css')}}"
 />
 {% endblock %} {%block content %}
+ 
 
+<div class="container d-flex justify-content-center align-items-center vh-100">
+  <div class="card p-4 shadow" style="width: 24rem;">
 
+      <h2 class="text-center mb-4">Login Here</h2>
 
-
-
-
-<div class="container my-login" style="padding-left: 1in; padding-right: 1in;">
-  <div class="row justify-content-center">
-    <div class="col-12 col-md-10 col-lg-8">
-      <h2>Login Here</h2>
       <form method="POST" action="/login">
         {{ form.hidden_tag() }}
-        <div>
-          <label for="email">Email:</label>
-          {{ form.email(size=32) }}
+        <div class="mb-3">
+          <label for="email" class="form-label">Email Address:</label>
+          {{ form.email(class='form-control',placeholder='Enter your Email', size=32) }}
         </div>
-        <div>
-          <label for="password">Password:</label>
-          {{ form.password(size=32) }}
+        <div class="mb-3">
+          <label for="password" class="form-label">Password:</label>
+          {{ form.password(class='form-control',placeholder='Enter your password',size=32) }}
         </div>
-
-        <div>{{ form.submit() }}</div>
-
+        <div>{{ form.submit(type='submit',class='btn btn-primary') }}</div>
       </form>
+      <br>
+
       <p>
         <a href="/register">Create an Account</a>
       </p>
 
       <div>
         <button class="btn btn-primary">
-          <a href="/register-professional">Register as Professional</a>
+          <a href="/register-professional" style="color: white;">Register as Professional</a>
         </button>
+
       </div>
     </div>
   </div>
